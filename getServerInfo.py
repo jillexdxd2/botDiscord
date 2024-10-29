@@ -1,26 +1,35 @@
 import requests
 
-def getServerInf(server = 20022603): #27536009 lex
-    url = f"https://api.battlemetrics.com/servers/{server}"
+def getServerInf(serverName = "sph"):
+    
+        servers = {"sph": 20022603,
+                "lex": 27536009}
 
-    token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjM5NzE4MDE2ZjZlYjY1NmMiLCJpYXQiOjE0NzgwMzc1MjQsIm5iZiI6MTQ3ODAzNzUyNCwiaXNzIjoiaHR0cHM6Ly93d3cuYmF0dGxlbWV0cmljcy5jb20iLCJzdWIiOiJ1cm46dXNlcjoxIn0.iwwHt2lvBxlBqcEm7HrX1b1Rb9MXcMghUY5xspluWgw"
+        server=""
+        if serverName.lower() in servers.keys():
+            server = servers[serverName]
+        else:
+             server = servers["sph"]
 
-    headers = {
-        "Authorization": f"Bearer {token}"
-    }
+        url = f"https://api.battlemetrics.com/servers/{server}"
 
-    response = requests.get(url, headers=headers)
+        token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IjM5NzE4MDE2ZjZlYjY1NmMiLCJpYXQiOjE0NzgwMzc1MjQsIm5iZiI6MTQ3ODAzNzUyNCwiaXNzIjoiaHR0cHM6Ly93d3cuYmF0dGxlbWV0cmljcy5jb20iLCJzdWIiOiJ1cm46dXNlcjoxIn0.iwwHt2lvBxlBqcEm7HrX1b1Rb9MXcMghUY5xspluWgw"
 
-    if response.status_code == 200:
-        server_data = response.json()
-        serverInfo = {"Team1": server_data["data"]["attributes"]["details"]["squad_teamOne"],
-                    "Team2": server_data["data"]["attributes"]["details"]["squad_teamTwo"],
-                    "Map": server_data["data"]["attributes"]["details"]["map"]}
+        headers = {
+            "Authorization": f"Bearer {token}"
+        }
 
-        print(serverInfo)
-        return serverInfo
-    else:
-        print(f"Error en la petición: {response.status_code}")
-        print(response.json())  
+        response = requests.get(url, headers=headers)
 
-getServerInf()
+        if response.status_code == 200:
+            server_data = response.json()
+            serverInfo = {"Team1": server_data["data"]["attributes"]["details"]["squad_teamOne"],
+                        "Team2": server_data["data"]["attributes"]["details"]["squad_teamTwo"],
+                        "Map": server_data["data"]["attributes"]["details"]["map"],
+                        "server": server["data"]}
+
+            print(serverInfo)
+            return serverInfo
+        else:
+            print(f"Error en la petición: {response.status_code}")
+            print(response.json())  

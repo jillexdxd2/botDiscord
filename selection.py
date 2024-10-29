@@ -2,8 +2,8 @@ from getServerInfo import getServerInf
 
 
 class Selection():
-    def __init__(self):
-        self.info = getServerInf()
+    def __init__(self, server = ""):
+        self.info = getServerInf(server)
         self.facciones_squad = {
                                 "VDV": ("🇷🇺", 
                                         {"name":"Russian Airborne Forces", "biomes":
@@ -138,7 +138,18 @@ class Selection():
             return self.facciones_squad[team[:team.find("_")]][1]["biomes"]["default"]
         
     def selectTeam(self):
-        return 
+        return
+    def getSquadMapsUrl(self):
+        try:
+            mapName, layerPrefix, versionPrefix = self.map.split('_')
+        
+        except ValueError:
+            print(f"Formato inválido para el nombre del mapa: {self.map}")
+            return None
+        
+        url = f"https://squadmaps.com/map?name={mapName}&layer={layerPrefix}%20{versionPrefix}"
+        return url
+
 
 #sel = Selection()
 #print(sel.getMapImage())
